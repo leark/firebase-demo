@@ -24,11 +24,11 @@
 		<link href="css/main.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="js/main.js"></script>
 
-
 	</head>
 
 	<!-- Initiate app and controller on body -->
-	<body ng-app="myApp" ng-controller="myCntr">
+	<body ng-app="myApp" ng-controller="myCtrl">
+
 		<!-- Header with logout button -->
 		<header>
 			<span class="fa fa-twitter fa-2x"></span>
@@ -42,15 +42,16 @@
 		<div class="container">
 			
 			<!-- Sign-in/sign-up form: show if userId isn't defined -->
-			<form name="myForm" novalidate ng-show="!userId">
+			<form name="myForm" ng-show="!userId" novalidate>
 			
 				<!-- Bind model "handle" to this input, set minimum length, and make it required -->
 				<div class="form-group">
 					<label>Handle:</label>
-					<input name="handle" class="form-control" ng-model="handle" required ng-minlength="6">	
+					<input ng-model="handle" ng-minlength="5" name="handle" class="form-control">	
 					
 					<!-- Add an error message if the length is too short -->	
-					<p class="help-block" ng-show="myForm.handle.$error.minlength">Too short</p>
+					<p class="help-block" ng-show="myForm.handle.$error.minlength">Too short!</p>
+					
 				</div>	
 
 				<!-- Input for image URL -->
@@ -63,10 +64,10 @@
 				<!-- Bind model "email" to this input and make it required -->
 				<div class="form-group">
 					<label>Email:</label>
-					<input  name="email" type="email" class="form-control" ng-model="email" required></input>
+					<input  ng-model="email" name="email" type="email" class="form-control"></input>
 
 					<!-- Show an error message if the email is not valid -->	
-					<p ng-show="myForm.email.$error.email">Invalid Email</p> 
+					<p class="help-block" ng-show="myForm.email.$error.email">Not an email!</p>
 				</div>
 
 				<!-- Password -->
@@ -115,7 +116,7 @@
 				<div>
 
 					<!-- Use ng-repeat directive to repeat a div for each element in tweets -->
-					<div class="tweet-box" ng-repeat="tweet in tweets | orderBy: '-time'">
+					<div class="tweet-box" ng-repeat="tweet in tweets | orderBy : '-time'">
 						<div>
 							<!-- Put an img tag that shows the userImage of that tweet -->
 							<img class="image" ng-src="{{users[tweet.userId].userImage}}"></img>
@@ -127,14 +128,16 @@
 
 						<!-- Put in the text of the tweet -->
 						<div class="tweet">
-							<p class="text">{{tweet.text}}</p>
+							{{tweet.text}}
 						</div>
 
 						<!-- Create a section for showing tweet likes -->
 						<div class="likes">
+							
 							<!-- Show a heart icon that, when clicked, 
 								passes your tweet to your "like" function -->
-							<i class="fa fa-heart" ng-click="liked(tweet)"></i>
+							<i ng-click="like(tweet)" class="fa fa-heart"></i>
+							
 							<!-- Show your total number of likes -->
 							<span>{{tweet.likes}}</span>
 						</div>
